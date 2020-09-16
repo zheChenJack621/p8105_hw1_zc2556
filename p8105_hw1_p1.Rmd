@@ -1,13 +1,12 @@
 ---
-title: "hw1 problem 1"
+title: "HW1 Problem 1"
 author: "Zhe Chen"
 date: "2020/9/16"
-output: html_document
+output: github_document
 ---
 
-# HW1 P1
 
-## include relevent library
+## Include relevent library
 ```{r}
 library(tidyverse)
 ```
