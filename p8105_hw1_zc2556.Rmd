@@ -71,7 +71,6 @@ From the warning, we know multiplication cannot be applied to factor data withou
 
 ```{r}
 library(palmerpenguins)
-library(tidyverse)
 data("penguins", package = "palmerpenguins")
 ```
 
