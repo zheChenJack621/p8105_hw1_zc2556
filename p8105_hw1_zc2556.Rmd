@@ -1,0 +1,114 @@
+---
+title: "P8105-HW1"
+author: "Zhe Chen"
+date: "2020/9/16"
+output: github_document
+---
+
+## Problem1
+
+### Include relevent library
+
+```{r}
+library(tidyverse)
+```
+
+
+### Create a data frame:
+
+```{r}
+prob1_df =
+  tibble(
+    ran_sample = rnorm(10),
+    pos_sample = ran_sample > 0,
+    char_var = LETTERS[1:10],
+    lv = factor(c("S","M","L","S","M","L","S","M","L","L"))
+  )
+```
+
+### Check the data frame:
+
+```{r}
+print(prob1_df)
+```
+
+### Take the mean of each variable:
+
+```{r}
+m_ran_samp = mean(prob1_df$ran_sample)
+m_ran_samp
+m_pos_samp = mean(prob1_df$pos_sample)
+m_pos_samp
+m_char_var = mean(prob1_df$char_var)
+m_char_var
+m_lv = mean(prob1_df$lv)
+m_lv
+```
+From the warning output, we can know that r cannot calcuate mean of a character vector or a factor vector, since both of their data type is character, not numeric.  
+
+### Convert the data type to numeric
+
+```{r}
+as.numeric(prob1_df$ran_sample)
+as.numeric(prob1_df$pos_sample)
+as.numeric(prob1_df$char_var)
+as.numeric(prob1_df$lv)
+```
+We successfully convert the first two variables (random sample, character vector) and the last variable (level) into numeric. Logical vector can be converted in numeric since r uses "1" represent TRUE and "0" represent FALSE; factor variable can be converted also because factor represents some different stratification, although it may be meaningless;character type of data cannot be converted into numeric data.
+
+### Apply multiplication
+
+```{r}
+as.numeric(prob1_df$pos_sample)*prob1_df$ran_sample
+factor(prob1_df$pos_sample)*prob1_df$ran_sample
+as.numeric((factor(prob1_df$pos_sample)))*prob1_df$ran_sample
+```
+From the warning, we know multiplication cannot be applied to factor data without converting to numbers. In general, multiplication can apply between numeric data and numberic data, not numeric data and character (or factor) data.
+
+## Problem 2
+
+### Preperation
+
+```{r}
+library(palmerpenguins)
+library(tidyverse)
+data("penguins", package = "palmerpenguins")
+```
+
+### Summary of Dataset
+
+```{r}
+head(penguins, 10)
+summary(penguins)
+```
+
+We exhibit the first 10 rows of the dataset to get a glance of our dataset. We have `r nrow(penguins)` rows and `r ncol(penguins)` columns in total, which means we have 8 variables and 344 samples. Variables are:
+
+  * "species" is a `r class(penguins$species)` and categorical variable, containing 3 levels       (Adélie, Chinstrap and Gentoo). This variable denotes penguin species. 
+  
+  * "island" is a `r class(penguins$island)` and categorical variable, containing 3 levels         (Biscoe, Dream or Torgersen). This variable denotes penguin`s origin location.
+  
+  * "bill_length_mm" is a `r class(penguins$bill_length_mm)` and continuous variable,           describing the bill length in milimeters. Its min is `r min(penguins$bill_length_mm, na.rm = TRUE)`;      max is `r max(penguins$bill_length_mm, na.rm = TRUE)`; mean is `r mean(penguins$bill_length_mm, na.rm = TRUE)`; it       has `r sum(is.na(penguins$bill_length_mm))` missing values; standard deviation is `r                       sd(penguins$bill_length_mm, na.rm = TRUE)`, ignoring NAs; IQR is `r                         IQR(penguins$bill_length_mm, na.rm = TRUE)`.
+
+  * "bill_depth_mm" is a `r class(penguins$bill_depth_mm)` and continuous variable,             describing the bill depth in milimeters. Its min is `r min(penguins$bill_depth_mm, na.rm = TRUE)`;        max is `r max(penguins$bill_depth_mm, na.rm = TRUE)`; mean is `r mean(penguins$bill_depth_mm, na.rm = TRUE)`;it has      `r sum(is.na(penguins$bill_depth_mm))` missing values; standard deviation is `r                            sd(penguins$bill_depth_mm, na.rm = TRUE)`, ignoring NAs;IQR is `r                           IQR(penguins$bill_depth_mm, na.rm = TRUE)`.
+  
+  * "flipper_length_mm" is a `r class(penguins$flipper_length_mm)` and discrete variable,       describing the flipper length in milimeters. Its min is `r                                  min(penguins$flipper_length_mm, na.rm = TRUE)`; max is `r max(penguins$flipper_length_mm, na.rm = TRUE)`; mean is `r     mean(penguins$flipper_length_mm, na.rm = TRUE)`; it has `r sum(is.na(penguins$flipper_length_mm))` missing values; standard deviation is `r sd(penguins$flipper_length_mm, na.rm = TRUE)`, ignoring NAs; IQR is `r IQR(penguins$flipper_length_mm, na.rm = TRUE)`.
+  
+  * "body_mass_g" is a `r class(penguins$body_mass_g)` and discrete variable,                   describing the body mass in grams. Its min is `r min(penguins$body_mass_g, na.rm = TRUE)`; max is `r max(penguins$body_mass_g, na.rm = TRUE)`; mean is `r mean(penguins$body_mass_g, na.rm = TRUE)`; it has `r sum(is.na(penguins$body_mass_g))` missing values ; standard deviation is `r sd(penguins$body_mass_g,na.rm = TRUE)`, ignoring NAs; IQR is `r IQR(penguins$body_mass_g, na.rm = TRUE)`.
+  
+  * "sex" is a `r class(penguins$sex)` and categorical variable, containing 2 levels         (female, male). This variable denotes penguin`s gender.
+  
+  * "year" is a `r class(penguins$year)` and discrete variable (can be categorical), containing 3 levels         (2007, 2008 or 2009). This variable denotes stduy year.
+  
+
+### Plot
+
+```{r, warning= FALSE}
+sc_plot <- ggplot(penguins, aes(x = bill_length_mm, y = flipper_length_mm, color = species)) + geom_point()
+sc_plot
+ggsave("HW1_P2_Plot.jpg", plot = sc_plot)
+```
+
+
+
+
